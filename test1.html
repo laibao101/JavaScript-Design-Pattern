@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //1.用对象收编变量
+    /*var CheckObject={
+    	checkName:function  () {
+    		console.log("checkName")
+    	},
+    	checkEmail:function () {
+    		console.log("checkEmail")	
+    	},
+    	checkPassword:function () {
+    		console.log("checkPassword")
+    	}
+    }
+
+
+    CheckObject.checkName();*/
+
+    //2.挂载到函数对象上面
+
+    /*var checkObject=function(){};
+
+    checkObject.checkName=function () {
+    	console.log("checkName")
+    }
+
+    checkObject.checkEmail=function () {
+    	console.log("checkEmail");
+    }
+
+    checkObject.checkPassword=function (arguments) {
+    	console.log("checkPassword");
+    }
+
+    checkObject.checkName()*/
+
+
+    //3.将函数返回为对象
+    /*var checkObject=function () {
+    	return {
+    		checkName:function () {
+    			console.log("checkName");
+    		},
+    		checkEmail:function () {
+    			console.log("checkEmail");
+    		}
+    	}
+    }
+
+    var a=checkObject();
+    a.checkName();
+    a.checkEmail();*/
+
+
+
+    //4.构造函数模式
+
+    /*var checkObject = function() {
+        this.checkName = function() {
+            console.log("checkName");
+        }
+        this.checkEmail = function() {
+            console.log("checkEmail");
+        }
+        this.checkPassword = function() {
+            console.log("checkPassword");
+        }
+    }
+
+    var a = new checkObject();
+    a.checkName();*/
+
+
+
+    //5.使用原型模式
+    /*var checkObject=function (){};
+
+    checkObject.prototype.checkName=function () {
+    	console.log("checkName");
+    }
+
+    checkObject.prototype.checkEmail=function () {
+    	console.log("checkEmail");
+    }
+
+    checkObject.prototype.checkPassword=function () {
+    	console.log("checkPassword");
+    }
+
+
+    var a=new checkObject();
+    a.checkName();*/
+
+    //6.使用原型模式+对象字面量    使用这种方式会切断对象和原来原型的联系，并且这种方式不可逆转
+
+    /*var checkObject=function() {};
+
+    checkObject.prototype={
+    	checkName:function () {
+    		console.log("checkname");
+    	},
+    	checkEmail:function () {
+    		console.log("checkEmail");
+    	},
+    	checkPassword:function () {
+    		console.log("checkPassword");
+    	}
+    }
+
+    var a=new checkObject();
+    a.checkName();*/
+
+    //7.对象字面量+可连写
+
+    /* var checkObject = {
+         checkName: function() {
+             console.log("checkName");
+             return this;
+         },
+         checkEmail: function() {
+             console.log("checkEmail");
+             return this;
+         },
+         checkPassword: function() {
+             console.log("checkPassword");
+             return this;
+         }
+     }
+
+     checkObject.checkName().checkEmail().checkPassword();*/
+
+
+
+    //8.原型+可连写
+
+    /*var checkObject = function() {};
+
+    checkObject.prototype = {
+        checkName: function() {
+            console.log("checkName");
+
+            return this;
+        },
+        checkEmail: function() {
+            console.log("checkEmail");
+
+            return this;
+        },
+        checkPassword: function() {
+            console.log("checkPassword");
+            return this;
+        }
+    }
+
+    var a=new checkObject();
+    a.checkName().checkEmail().checkPassword();*/
+
+
+    //9.挂载到原始函数对象上面
+
+    /*Function.prototype.addMethod = function(name, fn) {
+        this[name] = fn;
+    }
+
+    
+    var method = function() {};
+    method.addMethod("checkName", function() {
+        console.log("checkName");
+    })
+
+    method.addMethod("checkEmail",function () {
+    	console.log("checkEmail");
+    });
+
+    method.addMethod("checkPassword",function () {
+    	console.log("checkPassword");
+    })
+
+    method.checkName();
+    method.checkEmail();*/
+
+
+    //10.挂载到原始函数对象上面+可连写
+
+    Function.prototype.addMethod = function(name, fn) {
+        this[name] = fn;
+        return this;
+    }
+
+    var method = function() {};
+    method.addMethod("checkName", function() {
+        console.log("checkName");
+
+        return this
+    }).addMethod("checkEmail", function() {
+        console.log("checkEmail");
+
+        return this
+    }).addMethod("checkPassword", function() {
+        console.log("checkPassword");
+        return this
+    })
+
+    method.checkName().checkEmail();
+    </script>
+</body>
+
+</html>
