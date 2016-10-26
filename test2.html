@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    /*var Book = function(id, name, price) {
+                    //private attribute
+                    var num = 1;
+                    //private method
+                    function checkId() {
+
+                    };
+
+                    // privileged method
+                    this.getName = function() {
+                        return this.name;
+                    };
+
+                    this.getPrice = function() {
+                        return this.price;
+                    }
+
+                    this.getId = function() {
+                        return this.id;
+                    }
+
+                    this.setName = function() {
+                        this.name = name;
+                        console.log(this)
+                    }
+
+                    this.setPrice = function() {
+                            this.price = price;
+                        }
+                        //public attribute
+                    this.id = id;
+
+
+                    //public method 
+                    this.copy = function() {
+
+                    }
+
+                    //constructor
+                    this.setName(name);
+                    this.setPrice(price);
+                }
+
+
+                var book = new Book();*/
+
+
+    //1.创建对象的安全模式
+
+    /*var Book = function(title, time, type) {
+        this.title = title;
+        this.time = time;
+        this.type = type;
+    }
+
+    var book = Book("javascript", "2014", "js");  //这种创建模式，由于没有使用new。所以就是直接赋值，所以在全局里面，this就是window
+
+
+    console.log(window.title);
+    console.log(window.time);
+    console.log(window.type);*/
+
+
+    //这样使用安全模式可以解决这种问题
+
+    var Book = function(title, time, type) {
+        if (this instanceof Book) {
+            this.title = title;
+            this.time = time;
+            this.type = type;
+        } else {
+            return new Book(title, time, type);
+        }
+
+    }
+
+    var book = Book("javascript", "2014", "js");
+    console.log(book);
+
+    
+    </script>
+</body>
+
+</html>
