@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //外观模式实现
+    function addEvent(dom, type, fn) {
+        if (dom.addEventListener) { //针对支持DOM2级事件处理程序addEventListener方法的浏览器
+            dom.addEventListener(type, fn, false);
+        } else if (dom.attachEvent) { //对于不支持addEventListener但是支持attachEvent方法的浏览器  
+            dom.attachEvent('on' + type, fn);
+        } else { //针对不支持addEventListener也不支持attachEvent方法,
+            dom['on' + type] = fn;
+        }
+    };
+
+    //外观模式可以简化底层接口的复杂性,也可以解决浏览器兼容性问题
+
+    //获取事件对象
+    var getEvent = function(event) {
+        //标准浏览器返回event，IE下返回window.event
+        return event || windwo.event;
+    };
+
+    //获取元素
+    var getTarget = function(event) {
+        var event = getEvent(event);
+        //标准浏览器下面返回event.target,IE下返回event.srcElement
+        return event.target || event.srcElement;
+    };
+
+    //阻止默认事件行为
+    var preventDefault = function(event) {
+        var event = getEvent(event);
+        if (event.preventDefault) { //标准浏览器
+            event.preventDefault();
+        } else { //IE浏览器
+            event.returnValue = false;
+        }
+    };
+
+    
+    </script>
+</body>
+
+</html>
