@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //统计代理
+    var Count = (function() {
+        //缓存图片
+        var _img = new Image();
+        return function(param) {
+            //统计请求字符串
+            var str = 'htttp://www.count.com/a.gif?';
+            //拼接字符串
+            for (i in param) {
+                if (param.hasOwnProperty(i)) {
+                    str += i + '=' + param[i];
+                }
+            }
+            //发送统计请求
+            _img.src = str;
+        }
+    })();
+    //测试
+    Count({
+        num: 10
+    });
+    
+    </script>
+</body>
+
+</html>
