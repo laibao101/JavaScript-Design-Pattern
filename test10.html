@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //适配jQuery
+    //window.A=A=jQuery
+
+
+
+    /**
+     * 适配异类框架
+     * @type {}
+     */
+    // var A = A || {};
+    // //通过id获取元素
+    // A.g = function(id) {
+    //     return document.getElementById(id);
+    // };
+    // //为元素绑定事件
+    // A.on = function(id, type, fn) {
+    //     //如果传递参数是字符串则以id处理，否则以元素对象处理
+    //     var dom = typeof id === 'string' ? this.g(id) : id;
+
+    //     if (dom.addEventListener) { //针对支持DOM2级事件处理程序addEventListener方法的浏览器
+    //         dom.addEventListener(type, fn, false);
+    //     } else if (dom.attachEvent) { //对于不支持addEventListener但是支持attachEvent方法的浏览器  
+    //         dom.attachEvent('on' + type, fn);
+    //     } else { //针对不支持addEventListener也不支持attachEvent方法,
+    //         dom['on' + type] = fn;
+    //     }
+    // };
+
+    // //窗口加载完成事件
+    // A.on(window,load, function() {
+    //     //按钮点击事件
+    //     A.on('mybutton', 'click', function() {
+    //         event.preventDefault();
+
+    //     });
+    // });
+
+
+    /**
+     * 适配jQuery
+     */
+    var A = A || {};
+    A.g = function(id) {
+        //通过jQuery获取jQuery对象，然后返回第一个成员
+        return $(id).get(0);
+    };
+
+    A.on = function(id, type, fn) {
+        //如果传递参数是字符串则以id处理，否则以元素对象处理
+        var dom = typeof id === 'string' ? $('#' + id) : $(id);
+        dom.on(type, fn);
+    };
+
+    /**
+     * 参数适配器
+     */
+
+    function doSomeThing(obj) {
+        var _adapter = {
+            name: '渔业清河',
+            title: '设计模式',
+            age: 24,
+            color: 'pink',
+            size: 100,
+            prize: 50
+        };
+
+        for (var i in _adapter) {
+            if (_adapter.hasOwnProperty(i)) {
+                _adapter[i] = obj[i] || _adapter[i];
+            }
+        }
+        //或者extend(_adapter,obj) 
+        //do things
+    };
+
+    /**
+     * 数据适配
+     */
+
+    var arr = ['JavaScript', 'book', '前端编程语言', '8月1日'];
+    var obj = {
+        name: '',
+        type: '',
+        title: '',
+        time: ''
+    };
+
+    function arrToObjectAdapter(arr) {
+        return {
+            name: arr[0],
+            type: arr[1],
+            title: arr[2],
+            data: arr[3]
+        }
+    };
+
+    var adapterData = arrToObjectAdapter(arr);
+    console.log(adapterData);
+
+
+
+    /**
+     * 服务器端数据适配
+     */
+    //为了简化模型，使用jQuery的ajax方法，理想数据是一个一维数组
+    function ajaxAdapter(data) {
+        //处理数据并返回新数据
+        return [data['key1'], data['key2'], data['key3']];
+    };
+
+    $.ajax({
+        url: 'someAdress.php',
+        type: 'post',
+        data: {},
+        success: function(data, status) {
+            if (data) {
+                //使用适配后返回的数据
+                doSomeThing(ajaxAdapter(data))
+            }
+        }
+    });
+    
+    </script>
+</body>
+
+</html>
