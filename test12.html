@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //装饰着
+    var decorator = function(input, fn) {
+        //获取事件源
+        var input = document.getElementById(input);
+        //若事件源已经绑定事件
+        if (typeof input.onclick === 'function') {
+            //缓存事件源原有回调函数
+            var oldClickFn = input.onclick;
+            //为事件源定义新的事件
+            input.onclick = function() {
+                //事件源原有回调函数
+                oldClickFn();
+                //执行事件源新增回调函数
+                fn();
+            }
+        } else {
+            //事件源未绑定事件，直接为事件源添加新增回调函数
+            input.onclick = fn;
+        }
+    }
+
+    //装饰者模式就是对原有对象的属性与方法的添加
+    //适配器模式方法是对原有对象适配，添加的方法与原有方法功能上大致相似。但是装饰着提供的方法与原有的功能项是有区别的。
+    //使用适配器时我们需要调用原来的方法，在装饰者中我们不需要了解对象原有的功能。原有方法可以原封不动的使用
+    </script>
+</body>
+
+</html>
