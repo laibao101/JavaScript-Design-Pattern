@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    /**
+     * 桥接模式
+     */
+
+    //多元化对象
+    //多维变量类
+    //运动单元
+    function Speed(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+    Speed.prototype.run = function() {
+        console.log('运动起来');
+    };
+    //着色单元
+    function Color(cl) {
+        this.color = cl;
+    };
+    Color.prototype.draw = function() {
+        console.log('绘制色彩');
+    };
+    //变形单元
+    function Shape(sp) {
+        this.shape = sp;
+    };
+    Shape.prototype.change = function() {
+        console.log('改变形状');
+    };
+    //说话单元
+    function Speek(wd) {
+        this.word = wd;
+    };
+    Speek.prototype.say = function() {
+        console.log('书写字体');
+    };
+
+
+    //创建一个球
+    function Ball(x, y, c) {
+        //实现运动单元
+        this.speed = new Speed(x, y);
+        //实现着色单元
+        this.color = new Color(cl);
+    };
+    Ball.prototype.init = function() {
+        //实现运动
+        this.speed.run();
+        //实现着色
+        this.color.draw();
+    };
+
+
+    //创建一个人物类
+    function People(x, y, f) {
+        this.speed = new Speed(x, y);
+        this.font = new Speek(f);
+    };
+    People.prototype.init = function() {
+        this.speed.run();
+        this.font.say();
+    };
+
+
+
+    //创建一个精灵类
+    function Spirite(x, y, c, s) {
+        this.speed = new Speed(x, y);
+        this.color = new Color(c);
+        this.shape = new Shape(s);
+    };
+    Spirite.prototype.init = function() {
+        this.color.draw();
+        this.shape.change();
+    };
+
+
+    //需要人物就实例化一个人物对象
+    var p = new People(10, 12, 16);
+    p.init();
+    console.log(p)
+
+
+    //很像建造者模式
+    //桥接模式的最主要特点是将实现层与抽象层解耦分离，使两部分可以独立变化.
+    //桥接模式主要是对结构之间的结构
+    //抽象工厂模式和建造者模式主要业务在鱼创建
+    </script>
+</body>
+
+</html>
