@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    //虚拟表单父类
+    var Base = function() {
+        //创建元素
+        this.element = null;
+    };
+    Base.prototype = {
+        init: function() {
+            throw new Error('请重写该方法');
+        },
+        getElement: function() {
+            throw new Error('请重写该方法');
+        },
+        add: function() {
+            throw new Error('请重写该方法');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var FormItem = function(options) {
+        var defaults = {
+                parent: document.body,
+                id: 'new-container',
+                method: 'post',
+                action: '#',
+                name: 'new-form',
+                className: 'new-container'
+            }
+            //默认初始化
+        for (attr in defaults) {
+            if (options[attr] == null) {
+                options[attr] = defaults[attr];
+            }
+        };
+
+        Base.call(this);
+        //绑定父级
+        this.parent = options.parent;
+        //绑定id
+        this.id = options.id;
+        //绑定method
+        this.method = options.method;
+        //绑定action
+        this.action = options.action;
+        //绑定name
+        this.name = options.name;
+        //绑定className
+        this.className = options.className;
+        //初始化
+        this.init();
+    };
+    inheritPrototype(FormItem, Base);
+    FormItem.prototype.init = function() {
+        this.element = document.createElement('form');
+        this.element.id = this.id;
+        this.element.name = this.name;
+        this.element.className = this.className;
+        this.element.method = this.method;
+        this.element.action = this.action;
+    };
+    FormItem.prototype.add = function(child) {
+        //将传进来的子元素放进该容器
+        this.element.appendChild(child.getElement());
+        return this;
+    };
+    FormItem.prototype.getElement = function() {
+        return this.element;
+    };
+    FormItem.prototype.show = function() {
+        this.parent.appendChild(this.element);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var Group = function(id, className) {
+        Base.call(this);
+        // Container.call(this,{});
+        //绑定id
+        this.id = id;
+        //绑定class
+        this.className = className;
+        //初始化
+        this.init();
+    };
+    inheritPrototype(Group, Base);
+    Group.prototype.init = function() {
+        this.element = document.createElement('div');
+        this.element.id = this.id;
+        this.element.className = this.className;
+    };
+    Group.prototype.add = function(child) {
+        this.element.appendChild(child.getElement());
+        return this;
+    };
+    Group.prototype.getElement = function() {
+        return this.element;
+    };
+
+
+
+
+
+
+
+
+
+
+    var InputItem = function(options) {
+        Base.call(this);
+        var defaults = {
+            type: 'text',
+            name: 'input-item',
+            value: '',
+            id: '',
+        };
+
+        //默认初始化
+        for (attr in defaults) {
+            if (options[attr] == null) {
+                options[attr] = defaults[attr];
+            }
+        };
+        this.type = options.type;
+        this.name = options.name;
+        this.value = options.value;
+        this.id = options.id;
+        this.init();
+
+    };
+    inheritPrototype(InputItem, Base);
+    InputItem.prototype.init = function() {
+        this.element = document.createElement('input');
+        this.element.type = this.type;
+        this.element.name = this.name;
+        this.element.value = this.value;
+        this.element.id = this.id;
+
+    };
+
+    InputItem.prototype.add = function() {
+
+    };
+    InputItem.prototype.getElement = function() {
+        return this.element;
+    };
+
+
+
+
+
+
+
+
+
+
+
+    var LabelItem = function(forItem, text) {
+        Base.call(this);
+        this.forItem = forItem || '';
+        this.text = text;
+        this.init();
+    };
+    inheritPrototype(LabelItem, Base);
+    LabelItem.prototype.init = function() {
+        this.element = document.createElement('label');
+        this.element.for = this.forItem;
+        this.element.innerHTML = this.text;
+    };
+    LabelItem.prototype.add = function() {
+
+    };
+    LabelItem.prototype.getElement = function() {
+        return this.element;
+    };
+
+
+
+
+
+
+
+
+
+
+    var SpanItem = function(id, className, text) {
+        Base.call(this);
+        this.id = id || '';
+        this.className = className || '';
+        this.text = text || '';
+        this.init();
+    };
+    inheritPrototype(SpanItem, Base);
+    SpanItem.prototype.init = function() {
+        this.element = document.createElement('span');
+        this.element.id = this.id;
+        this.element.className = this.className;
+        this.element.innerHTML = this.text;
+
+    };
+    SpanItem.prototype.add = function() {
+
+    };
+    SpanItem.prototype.getElement = function() {
+        return this.element;
+    };
+
+
+
+
+
+
+    var TextareaItem = function(options) {
+        Base.call(this);
+        var defaults = {
+            cols: 40,
+            rows: 8,
+            name: '',
+            id: '',
+            value: '',
+            className: ''
+        };
+
+
+        //默认配置
+        for (attr in defaults) {
+            if (options[attr] == null) {
+                options[attr] = defaults[attr];
+            }
+        };
+
+
+        this.cols = options.cols;
+        this.rows = options.rows;
+        this.name = options.name;
+        this.id = options.id;
+        this.value = options.value;
+        this.className = options.className;
+
+
+        this.init();
+    };
+    inheritPrototype(TextareaItem, Base);
+    TextareaItem.prototype.init = function() {
+        this.element = document.createElement('textarea');
+        this.element.cols = this.cols;
+        this.element.name = this.name;
+        this.element.id = this.id;
+        this.element.value = this.value;
+        this.element.className = this.className;
+    };
+    TextareaItem.prototype.add = function() {
+
+    };
+    TextareaItem.prototype.getElement = function() {
+        return this.element;
+    }
+
+
+
+
+    var FieldsetItem = function(form, name, legend) {
+        Base.call(this);
+        this.form = form || '';
+        this.name = name || '';
+        this.legend = legend || '';
+        this.init();
+    };
+    FieldsetItem.prototype.add = function(child) {
+        this.element.appendChild(child.getElement());
+        return this;
+    };
+    FieldsetItem.prototype.init = function() {
+        this.element = document.createElement('fieldset');
+        this.element.form = this.form;
+        this.element.name = this.name;
+        if (this.legend != '') {
+            var legend = document.createElement('legend');
+            legend.innerHTML = this.legend;
+            this.element.appendChild(legend);
+        }
+    };
+    FieldsetItem.prototype.getElement = function() {
+        return this.element;
+    };
+
+
+
+
+
+
+
+
+
+
+
+    function inheritPrototype(subObject, superObject) {
+        var p = inheritObject(superObject.prototype);
+
+        p.constructor = subObject;
+
+        subObject.prototype = p;
+    };
+
+    function inheritObject(o) {
+        function F() {
+
+        };
+        F.prototype = o;
+        return new F();
+    }
+
+
+
+
+
+
+    var form = new FormItem({
+        name: 'form-item',
+        id: 'form-item',
+    });
+    form.add(
+        new Group('div-1', 'div-1').add(
+            new LabelItem('user_name', '用户名:')
+        ).add(
+            new InputItem({
+                name: 'user_name',
+                className: 'user_name'
+            })
+        ).add(
+            new SpanItem('', '', '4到6位数字或字母')
+        )
+    ).add(
+        new Group('div-2').add(
+            new LabelItem('user_password', '密 码:')
+        ).add(
+            new InputItem({
+                type: 'password',
+                name: 'user_password',
+                className: 'user_password'
+            })
+        ).add(
+            new SpanItem('', '', '6到12位数字或者密码')
+        )
+    ).add(
+        new FieldsetItem('', 'form-item', '姓名')
+    ).show();
+    </script>
+</body>
+<!-- <form action="#" method="post">
+    <div class="group">
+        <label for="name">Text Input:</label>
+        <input type="text" name="name" id="name" value="" tabindex="1" />
+    </div>
+    <div>
+        <h4>Radio Button Choice</h4>
+        <label for="radio-choice-1">Choice 1</label>
+        <input type="radio" name="radio-choice-1" id="radio-choice-1" tabindex="2" value="choice-1" />
+        <label for="radio-choice-2">Choice 2</label>
+        <input type="radio" name="radio-choice-2" id="radio-choice-2" tabindex="3" value="choice-2" />
+    </div>
+    <div>
+        <label for="select-choice">Select Dropdown Choice:</label>
+        <select name="select-choice" id="select-choice">
+            <option value="Choice 1">Choice 1</option>
+            <option value="Choice 2">Choice 2</option>
+            <option value="Choice 3">Choice 3</option>
+        </select>
+    </div>
+    <div>
+        <label for="textarea">Textarea:</label>
+        <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+    </div>
+    <div>
+        <label for="checkbox">Checkbox:</label>
+        <input type="checkbox" name="checkbox" id="checkbox" />
+    </div>
+    <div>
+        <input type="submit" value="Submit" />
+    </div>
+</form> -->
+
+</html>
