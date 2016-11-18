@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    var Flyweight = {
+        moveX: function(x) {
+            this.x = x;
+        },
+        moveY: function(y) {
+            this.y = y;
+        }
+    };
+
+
+    var Player = function(x, y, c) {
+        this.x = x;
+        this.y = y;
+        this.color = c;
+    };
+
+    Player.prototype = Flyweight;
+    Player.prototype.changeC = function(c) {
+        this.color = c;
+    };
+
+    var Spirite = function(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    };
+    Spirite.prototype = Flyweight;
+    Spirite.prototype.changeR = function(r) {
+        this.r = r;
+    };
+
+
+
+    var player = new Player(5, 6, 'red');
+    console.log(player)
+    </script>
+</body>
+
+</html>
