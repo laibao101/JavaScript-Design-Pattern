@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -133,10 +134,39 @@
         //设置取消按钮内容
         this.cancelBtn.innerHTML = this.cancel || '取消';
     };
+    CancelAlert.prototype = new Alert();
+    CancelAlert.prototype.init = function () {
+        //继承标题提示框创建方法
+        TitleAlert.prototype.init.call(this);
+        //由于取消按钮要添加在末尾，所以创建完其他组件后添加
+        this.panel.appendChild(this.cancelBtn);
+    }
+    CancelAlert.prototype.bindEvent=function () {
+        var me = this;
+        //标题提示框绑定事件方法继承
+        TitleAlert.prototype.bindEvent.call(me);
+        //取消按钮事件
+        this.cancelBtn.onclick=function () {
+            //执行取消回调函数
+            me.fail();
+            //隐藏弹层
+            me.hide();
+        }
+    }
+
+    new CancelAlert({
+        title:'提示标题',
+        content:'提示内容',
+        success:function () {
+            console.log("ok");
+        },
+        fail:function () {
+            console.log("cancel");
+        }
+    }).init();
 
 
 
-    
     </script>
 </body>
 

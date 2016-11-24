@@ -1,4 +1,45 @@
-body{
-  color: red;
-  background: white;
+div,span,body,h3,b,p{
+  margin:0;
+  padding: 0;
+}
+
+.alert{
+    width: 800px;
+    height: 200px;
+    background: white;
+    position: fixed;
+    top: 40%;
+    left: 30%;
+    padding: 10px;
+    border: 5px solid #0093ff;
+    border-radius: 10px;
+}
+
+.a-confirm{
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    background: #0093ff;
+}
+
+.cancel{
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    background: #eee;
+}
+.a-confirm, .cancel{
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.a-confirm:hover{
+    background: #0041ff;
+}
+
+.cancel:hover{
+    background: #666;
 }
