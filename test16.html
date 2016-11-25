@@ -150,7 +150,7 @@
             //执行取消回调函数
             me.fail();
             //隐藏弹层
-            me.hide();
+            // me.hide();
         }
     }
 
@@ -162,6 +162,19 @@
         },
         fail:function () {
             console.log("cancel");
+            new CancelAlert({
+                title:'取消提示框',
+                content:'你确定要取消么？',
+                success:function () {
+                    console.log("确定取消");
+                },
+                fail:function () {
+                    console.log("不取消");
+                    this.hide();
+                    return false;
+                }
+            }).init()
+            console.log(1)
         }
     }).init();
 

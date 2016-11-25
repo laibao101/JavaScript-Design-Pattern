@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="content"></div>
+    <div class="content bar"></div>
+    <div class="content "></div>
+    <div name="content"></div>
+    <div id="container"></div>
+    <script type="text/javascript">
+    //格式化字符串方法
+    function formatString(str, data) {
+        return str.replace(/\{#(\w+)#\}/g, function(match, key) {
+            return typeof data[key] === "undefined" ? '' : data[key];
+        })
+    };
+    //基础导航
+    var Nav = function(data) {
+        //基础导航样式模板
+        this.item = '<a href="{#href#}" title="{#title#}">{#name#}{#price#}</a>';
+        //创建字符串
+        this.html = '';
+        //格式化字符串
+        for (var i = 0, len = data.length; i < len; i++) {
+            this.html += formatString(this.item, data[i]);
+        };
+        //返回字符串
+        return this.html;
+    };
+
+    //带有消息提醒信息导航
+    var NumNav = function(data) {
+        //消息提醒信息组件模板
+        var tpl = '<b>{#num#}</b>';
+        //装饰数据
+        for (var i = data.length - 1; i >= 0; i--) {
+            data[i].name += formatString(tpl, data[i]);
+        }
+        //继承基础导航类,并返回字符串
+        return Nav.call(this, data);
+    }
+
+    //带有链接地址的导航
+    var LinkNav = function(data) {
+        //链接地址模板
+        var tpl = '<span>{#link#}</span>';
+        //装饰数据
+        for (var i = data.length - 1; i >= 0; i--) {
+            data[i].name += formatString(tpl, data[i]);
+        }
+        //继承基础导航类
+        return Nav.call(this, data);
+    };
+
+
+    //获取导航容器
+    var nav = document.getElementById('content');
+    //添加内容
+    nav.innerHTML = NumNav([{
+        href: 'http://www.baidu.com',
+        title: '百度一下，你就知道',
+        name: '百度',
+        num: '10',
+        price: '200'
+    }, {
+        href: 'http://www.taobao.com',
+        title: '淘宝商城',
+        name: '淘宝',
+        num: '2'
+    }, {
+        href: 'http://www.qq.com',
+        title: '腾讯首页',
+        name: '腾讯',
+        num: '3'
+    }]);
+
+    var nav2 = document.getElementsByClassName('content');
+    nav2.innerHTML = NumNav([{
+        href: 'http://www.baidu.com',
+        title: '百度一下，你就知道',
+        name: '百度',
+        num: '10',
+        price: '200'
+    }, {
+        href: 'http://www.taobao.com',
+        title: '淘宝商城',
+        name: '淘宝',
+        num: '2'
+    }]);
+    for (var i = 0; i < nav2.length; i++) {
+        nav2[i].innerHTML = nav2.innerHTML;
+    }
+
+
+    var nav3 = document.getElementsByName('content')[0];
+    nav3.innerHTML = LinkNav([{
+        href: 'http://www.baidu.com',
+        title: '百度一下，你就知道',
+        name: '百度',
+        link: 'http://www.taobao.com'
+    }]);
+
+    //带有链接地址和消息提醒的导航
+    var LinkNumNav = function(data) {
+        LinkNav.call(this, data);
+        NumNav.call(this, data);
+        return Nav.call(this, data);
+    };
+
+    var nav4 = document.getElementById('container');
+    nav4.innerHTML = LinkNumNav([{
+        href: 'http://www.baidu.com',
+        title: '百度一下，你就知道',
+        name: '百度',
+        link: 'http://www.taobao.com',
+        num: 20
+    }]);
+
+    //模板方法的核心在于对方法的重用，将核心方法封装在基类中，让子类继承基类的方法，实现基类方法的共享，达到共用.
+    </script>
+</body>
+
+</html>
