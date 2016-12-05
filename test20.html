@@ -7,6 +7,11 @@
 </head>
 
 <body>
+<input type="text" name="">
+<input type="text" name="">
+<input type="text" name="">
+<span></span>
+<ul></ul>
     <script type="text/javascript">
     /**
      * 异步请求对象(简化版本)
@@ -40,6 +45,97 @@
         //发送异步请求
         xhr.open('get', url, true);
         xhr.send(null);
+    };
+
+    /**
+     * 处理响应数据
+     * 参数data     响应数据
+     * 参数dealType   响应事件处理对象
+     * 参数dom        事件源
+     */
+    var dealData = function(data, dealType, dom) {
+        //对象toString方法简化引用
+        var dataType = Object.prototype.toString.call(data);
+        //判断响应数据处理对象
+        switch (dealType) {
+            //输入框提示功能
+            case 'sug':
+                //如果数据为数组
+                if (dataType === '[object Array]') {
+                    //创建提示框组件
+                    return createSug(data, dom);
+                }
+                //将响应的对象数据转化为数组
+                if (dataType === '[object Object]') {
+                    var newData = [];
+                    for (i in data) {
+                        if (data.hasOwnProperty(i)) {
+                            newData.push(data[i]);
+                        }
+                    };
+                    console.log(newData)
+                    //创建提示框组件
+                    return createSug(newData, dom);
+                }
+                //将响应的其他数据转化为数组
+                return createSug([data], dom);
+                break;
+            case 'validate':
+                //创建校验组件
+                return createValidataResult(data, dom);
+                break;
+        }
+    }
+
+
+    /**
+     * 创建提示框组件
+     * 参数data       响应适配数据
+     * 参数dom        事件源
+     */
+
+    var createSug = function(data, dom) {
+        var i = 0,
+            len = data.length,
+            html = '';
+        //拼接每一条提示语句
+        for (; i < len; i++) {
+            html += '<li>' + data[i] + '</li>';
+        }
+        //显示提示框
+        dom.parentNode.getElementsByTagName('ul')[0].innerHTML = html;
+    };
+    /**
+     * 创建校验组件
+     * 参数data       响应适配数据
+     * 参数dom        事件源
+     */
+    var createValidataResult = function(data, dom) {
+        //显示校验结果
+        dom.parentNode.getElementsByTagName('span')[0].innerHTML = data;
+    };
+
+    // var input=document.getElementsByTagName('input');
+    // dealData('用户名不正确', 'validate', input[0]);
+    // dealData(123, 'sug', input[1]);
+    // dealData(['爱奇艺', '阿里巴巴', '爱漫画'], 'sug', input[1]);
+    // dealData({
+    //         'iqy': '爱奇艺',
+    //         'albb': '阿里巴巴',
+    //         'imh': '爱漫画'
+    //     },
+    //     'sug',
+    //     input[1]
+    // );
+    
+    var input=document.getElementsByTagName('input');
+    //监听内容改变事件做内容校验
+    input[0].onchange=function (e) {
+        sendData({value:input[0].value},'validate',input[0]);
+    }
+    //监听键盘事件对内容做提示处理
+    input[1].onkeydown=function (e) {
+        sendData({value:input[1].value},'sug',input[1]);
     }
     </script>
 </body>
