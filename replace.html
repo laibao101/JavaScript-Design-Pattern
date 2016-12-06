@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    textarea{
+        width:45%;
+        height:400px;
+    }
+    button{
+        vertical-align: top;
+        height:406px;
+        width:5%;
+        cursor: pointer;
+    }
+    </style>
+
+    <script>
+        function $(id){
+            return document.getElementById(id);
+        }
+        function replace(){
+            setTimeout(function(){
+                var text = $('source').value;
+                text = text.replace(/\s*([^\r\n]+)(\s*)/g,"'$1',$2");
+                $('result').value = text;
+            },100)
+        }
+        function clearText(){
+            $('source').value = '';
+            $('result').value = '';
+        }
+        
+    </script>
+
+</head>
+<body>
+    <textarea   id="source" onpaste="replace()">
+        
+    </textarea>
+    <button onclick="clearText()" >clear</button>
+    <textarea  id="result" >
+        
+    </textarea>
+</body>
+</html>
