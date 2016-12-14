@@ -105,33 +105,145 @@
     // console.log(demo.get(2000));
 
     //处理所有元素
-    demo.dealEach(function(text, color) {
-        this.innerHTML = text; //设置内容
-        this.style.background = color; //设置背景色
-    }, 'test', 'pink');
+    // demo.dealEach(function(text, color) {
+    //     this.innerHTML = text; //设置内容
+    //     this.style.background = color; //设置背景色
+    // }, 'test', 'pink');
     //排他处理第三个与第四个元素
-    demo.exclusive([2, 3], function() {
-        this.innerHTML = '被排除的';
-        this.style.background = 'green';
-    }, function() {
-        this.innerHTML = '选中的';
-        this.style.background = 'red';
-    });
+    // demo.exclusive([2, 3], function() {
+    //     this.innerHTML = '被排除的';
+    //     this.style.background = 'green';
+    // }, function() {
+    //     this.innerHTML = '选中的';
+    //     this.style.background = 'red';
+    // });
 
 
 
     //数组迭代器
     var eachArray = function(arr, fn) {
-        var i = 0,
-            len = arr.length;
-        //遍历数组
-        for (; i < len; i++) {
-            //依次执行回调函数，注意回调函数中传入的参数第一个为索引，第二个为索引对应的值
-            if (fn.call(arr[i], i, arr[i]) === false) {
-                break;
+            var i = 0,
+                len = arr.length;
+            //遍历数组
+            for (; i < len; i++) {
+                //依次执行回调函数，注意回调函数中传入的参数第一个为索引，第二个为索引对应的值
+                if (fn.call(arr[i], i, arr[i]) === false) {
+                    break;
+                }
+            }
+        }
+        //对象迭代器
+    var eachObject = function(obj, fn) {
+        //遍历对象中每一个属性
+        for (i in obj) {
+            //一次执行回调函数，注意回调函数中传入的参数第一个为属性，第二个为该属性对应的值
+            if (obj.hasOwnProperty(i)) {
+                if (fn.call(obj[i], i, obj[i]) === false) {
+                    break;
+                }
             }
         }
     }
+
+    //测试数组迭代器
+    for (var i = 0, arr = []; i < 5; arr[i++] = i) {
+
+    };
+
+    // eachArray(arr,function (i,data) {
+    //     console.log(i,data);
+    // })
+
+
+
+    //测试对象迭代器
+    var obj = {
+        a: 23,
+        b: 56,
+        c: 67,
+        d: function() {
+            console.log(1)
+        }
+    };
+    // eachObject(obj,function (i,data) {
+    //     console.log(i,data);
+    // });
+    // var a=Object.values(obj)
+    // console.log(Object.values(obj));
+    // a[3]();
+
+    //同步变量迭代器
+
+    //需要同步的变量
+    var A = {
+        //所有用户共有
+        common: {},
+        //客户端数据
+        client: {
+            user: {
+                username: '雨夜清荷',
+                uid: '123'
+            }
+        },
+        //服务端数据
+        server: {}
+    };
+
+    //同步变量迭代取值器
+    AGetter = function(key) {
+        //如果不存在A则返回未定义
+        if (!A) {
+            return undefined;
+        }
+        var result = A; //获取需要同步的变量A对象
+        key = key.split('.'); //解析属性层次序列
+        //迭代同步变量A对象属性
+        for (var i = 0, len = key.length; i < len; i++) {
+            //如果第i层属性存在对应的值则迭代该属性值
+            if (result[key[i]] != undefined) {
+                result = result[key[i]];
+            } else {
+                //如果不存在则返回未定义
+                return undefined;
+            }
+        }
+        //返回获取的结果
+        return result;
+    };
+
+    //获取用户名数据
+    // console.log(AGetter('client.user.username'));
+    // console.log(AGetter('server.lang.local'));
+
+    //同步变量迭代赋值器
+    ASetter = function(key, val) {
+            //如果不存在A则返回未定义
+            if (!A) {
+                return false;
+            };
+            var result = A; //获取同步变量A对象
+            key = key.split('.'); //解析属性层次序列
+            //迭代同步变量A对象属性
+            for (var i = 0, len = key.length; i < len - 1; i++) {
+                //如果第i层属性对应值不存在，则定义为对象
+                if (result[key[i]] === undefined) {
+                    result[key[i]] = {};
+                }
+                //如果第i层属性对应的值不是对象（Object）的一个实例，则抛出错误
+                if (!(result[key[i]] instanceof Object)) {
+                    throw new Error('A' + key.splice(0, i + 1).join('.') + 'is not Object');
+                    return false;
+                }
+                //迭代赋值该层属性值
+                result = result[key[i]];
+            }
+            //返回设置成功的属性值
+            return result[key[i]] = val;
+        }
+        //缓存添加体育新闻模块数据
+        // console.log(ASetter('client.module.news.sports','on'));
+
+    console.log(ASetter('client.user.username.sports', 'on'));
     </script>
 </body>
 
