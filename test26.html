@@ -6,7 +6,46 @@
 </head>
 <body>
     <script type="text/javascript">
-        
+        /**
+         * 解释器模式：对于一种语言，给出起文法表示形式，并定义一种解释器，通过使用这种解释器语言中定义的句子
+         * 
+         */
+        //获取兄弟元素名称
+        function getSublingName(node) {
+            //如果存在兄弟元素
+            if (node.previousSibling) {
+                var name='',//返回兄弟元素名称字符串
+                 count=1,//紧邻兄弟元素中相同名称元素个数
+                 nodeName=node.nodeName,//原始节点名称
+                 sibling=node.previousSibling;//前一个兄弟节点元素
+                 //如果存在前一个兄弟元素
+                 while(sibling){
+                    //如果节点为元素并且节点类型与前一个兄弟元素类型相同，并且前一个兄弟元素名称存在
+                    if (sibling.nodeType==1 && sibling.nodeType === node.nodeType && sibling.nodeName) {
+                        //如果节点名称和前一个兄弟元素名称相同
+                        if (nodeName == sibling.nodeName) {
+                            //节点名称后面添加计数
+                            name += ++count
+                        } else {
+                            //重置相同相邻节点名称节点个数
+                            count=1;
+                            //追加新的节点名称
+                            name += '|'+sibling.nodeName.toUpperCase();
+                        }
+                    } 
+                    //向前获取一个兄弟元素
+                    sibling=sibling.previousSiblingl
+                 }
+                 return name;
+            } else {
+                //否则不存在兄弟元素
+                return '';
+            }
+        }
+        //XPath解释器
+        var Interpreter=(function () {
+            //获取兄弟元素名称
+        })
     </script>
 </body>
 </html>
