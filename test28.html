@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <style type="text/css">
+    li {
+        padding: 5px;
+        border: 1px solid #000;
+        background: red;
+        margin: 5px;
+    }
+    </style>
+    <ul id="container">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div id="article">
+        <p>第一段文字</p>
+    </div>
+    <div id="btn_container">
+        <button id="btn">demo</button>
+    </div>
+    <script type="text/javascript">
+    /**
+     * 委托模式：多个对象接收并处理同一个请求，他们将请求委托给另一个对象统一处理请求
+     */
+
+    var ul = document.getElementById('container'),
+        li = document.getElementsByTagName('li'),
+        i = li.length - 1;
+
+    //源代码
+
+    // for (; i >= 0; i--) {
+    //     li[i].onclick = function() {
+    //         this.style.backgroundColor = 'grey';
+    //     }
+    // }
+    // 
+
+    //代理
+    ul.onclick = function(e) {
+        var e = e || window.event,
+            tar = e.target || e.srcElement;
+        if (tar.nodeName.toLowerCase() == "li") {
+            tar.style.backgroundColor = 'grey';
+        }
+    }
+
+    var article = document.getElementById('article');
+    article.onclick = function(e) {
+        var e = e || event,
+            tar = e.target || e.srcElement;
+        if (tar.nodeName.toLowerCase() == "p") {
+            tar.innerHTML = "更改内容";
+        }
+    }
+
+    var p = document.createElement('p');
+    p.innerHTML = "新增内容";
+    article.appendChild(p);
+
+
+
+    //内存外泄
+    //老版本IE引用计数式垃圾回收机制，使得那些对DOM元素的引用没有显性清除的数据会遗留在内存中，除非关闭浏览器，否则无法清除
+    var g = function (id) {
+        return document.getElementById(id);     
+    };
+
+    //这样会导致内存泄漏
+    g('btn').onclick=function () {
+        g('btn_container').innerHTML='触发了事件';
+    }
+    //解决问题，可以显性清除事件
+    g('btn').onclick=function () {
+        g('btn').onclick=null;
+        g('btn_container').innerHTML='触发了事件';
+    }
+
+    //g('btn').onclick=null;这个清除事件语句在一些标准浏览器中是不需要的，因为他们采用标记清除方式管理着自身内存吗，所以更好的解决方式是代理模式
+    g('btn').onclick=function (e) {
+        //获取触发事件元素
+        var target = e && e.target || window.event.srcElement;
+        //判断触发事件元素是否是id为btn的元素
+        if (target.id==='btn') {
+            //重置父元素内容
+            g('btn_container').innerHTML="触发了事件";
+        }
+    }
+
+    
+
+
+    </script>
+</body>
+
+</html>
