@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    textarea{
+        width:45%;
+        height:400px;
+    }
+    button{
+        vertical-align: top;
+        height:120px;
+        width:100%;
+        cursor: pointer;
+        float: left;
+        margin-bottom: 20px;
+    }
+    </style>
+
+    <script>
+        var tt = 0  , ht = 0;
+        function $(id){
+            return document.getElementById(id);
+        }
+        function toTpl(){
+            clearTimeout(tt);
+            tt = setTimeout(function(){
+                var text = $('source').value;
+                text = text.replace(/\s*([^\r\n]+)(\s*)/g,"'$1',$2");
+                var res = text.replace(/,\s*$/,'');
+                res = 'var tpl = [ \n' + res +'\n].join(\'\');\n';
+                $('result').value = res;
+            },100);
+        }
+        function clearText(){
+            $('source').value = '';
+            $('result').value = '';
+        }
+        function toHTML(){
+            clearTimeout(ht);
+            ht = setTimeout(function(){
+                var text = $('result').value;
+                text = text.replace(/'([^']*)',?/g,"$1");
+                $('source').value = text;
+            },100) ;
+        }
+    </script>
+
+</head>
+<body>
+    <textarea   id="source" onpaste="toTpl()" onkeyup="toTpl()">
+        
+    </textarea>
+    <div style="width:5%;display:inline-block;vertical-align: top">
+    <button onclick="toTpl()" >&gt;&gt;</button>
+    <button onclick="clearText()" >clear</button>
+    <button onclick="toHTML()" >&lt;&lt;</button>
+    </div>
+    <textarea  id="result" onpaste="toHTML()" onkeyup="toHTML()">
+        
+    </textarea>
+</body>
+</html>
