@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        img{
+            width: 100px;
+            height: 100px;
+            display: none;
+        }
+        .show{
+            display: block;
+        }
+        li{
+            background: red;
+            margin:30px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body style="height: 1500px">
+    <button id="back" style="position: absolute;top:1000px;">返回顶部</button>
+    <div id="icon" class="icon">
+        <ul class="icon">
+            <li class="weixin">微信</li>
+            <li class="weibo">微博</li>
+        </ul>
+        <div style="width: 200px;background: blue;">
+            <img class="" src="command/01.jpg" />
+            <img  src="command/02.jpg" />
+            <span class="arrow"><em></em></span>
+        </div>
+    </div>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="easing.js"></script>
+    <script type="text/javascript">
+    /**
+     * 节流模式：对重复的业务逻辑进行节流控制，执行最后一次操作并取消其他操作，以提高性能
+     * 
+     */
+
+    //节流器
+    var throttle = function() {
+        //获取第一个参数
+        var isClear = arguments[0],
+            fn;
+        //如果第一个参数是boolean类型那么第一个参数则表示是否清除计时器
+        if (typeof isClear === 'boolean') {
+            //第二个参数为函数
+            fn = arguments[1];
+            //函数的计时器句柄存在，清除该计时器
+            fn._throttleID && clearTimeout(fn._throttleID);
+        } else {
+            //通过计时器延迟函数的执行
+            fn = isClear;
+            //第二个参数为函数执行时的参数
+            param = arguments[1];
+            //对执行时的参数适配默认值，这里我们用到以前学过的extend方法
+            var p = $.extend({
+                context: null, //执行函数执行时的作用域
+                args: [], //执行函数执行时的相关参数（IE下为数组）
+                time: 300 //执行函数延迟执行的时间
+            }, param);
+            console.log(p)
+            //清除执行函数计时器句柄
+            arguments.callee(true, fn);
+            //为函数绑定计时器句柄，延迟执行函数
+            fn._throttleID = setTimeout(function() {
+                //执行函数
+                fn.apply(p.context, p.args)
+            }, p.time)
+        }
+    }
+
+
+    </script>
+    <script type="text/javascript">
+        //返回顶部按钮动画
+        function moveScroll() {
+            var top = $(document).scrollTop();
+            $('#back').animate({top:top+300},400,'easeOutCubic');
+        }
+        //监听页面滚动条事件
+        //$(window).on('scroll',function () {
+            //节流执行返回顶部按钮动画
+        //    throttle(moveScroll);
+            // moveScroll()
+       // })
+
+        //外观模式封装获取元素方法
+        function $(id) {
+            return document.getElementById(id);
+        }
+        function $tag(tag,container) {
+            container = container || document;
+            return container.getElementsByTagName(tag);
+        }
+        //浮层类
+        var Layer=function (id) {
+            //获取容器
+            this.container = $(id);
+            //获取容器中的浮层容器
+            this.layer = $tag('div',this.container)[0];
+            //获取icon容器
+            this.lis = $tag('li',this.container);
+            //获取二维码图片
+            this.imgs = $tag('img',this.container);
+            //绑定事件
+            this.bindEvent();
+        }
+
+        Layer.prototype={
+            //绑定交互事件
+            bindEvent:function () {
+                //缓存当前对象
+                var that = this;
+                //隐藏浮层
+                function hideLayer() {
+                    that.layer.className='';
+                }
+                //显示浮层
+                function showLayer () {
+                    that.layer.className='show';
+                }
+
+                that
+                //鼠标光标移入事件
+                .on(that.container,'mouseenter',function () {
+                    //清除隐藏浮层方法计时器
+                    console.log(2)
+                    throttle(true,hideLayer);
+                    //延迟显示浮层方法
+                    // throttle(showLayer);
+                })
+                //光标移除事件
+                // .on(that.container,'mouseleave',function () {
+                //     //延迟浮层隐藏方法
+                //     throttle(hideLayer);
+                //     //清除显示浮层方法计时器
+                //     throttle(true,showLayer);
+                // });
+                //遍历icon绑定事件
+                for (var i = 0; i < that.lis.length; i++) {
+                    //自定义属性index
+                    that.lis[i].index = i;
+                    //为每一个li元素绑定鼠标移入事件
+                    // that
+                    // .on(that.lis[i],'mouseenter',function () {
+                    //     //获取自定义属性index
+                    //     var index = this.index;
+                    //     //排除所有img的show类
+                    //     for (var i = 0; i < that.imgs.length; i++) {
+                    //         that.imgs[i].className='';
+                    //     }
+                    //     //为目标图片设置show类
+                    //     that.imgs[index].className='show';
+                    //     //从新定义浮层位置
+                    //     that.layer.style.left = -22 + 60*index + 'px';                        
+                    // })
+                    // .on(that.lis[i],'mouseleave',function () {
+                    //     //获取自定义属性index
+                    //     var index = this.index;
+                    //     //排除所有img的show类
+                    //     for (var i = 0; i < that.imgs.length; i++) {
+                    //         that.imgs[i].className='';
+                    //     }
+                        
+                    // })
+                }
+            },
+            //事件绑定方法
+            on:function (ele,type,fn) {
+                ele.addEventListener ? ele.addEventListener(type,fn,false) : ele.attachEvent('on'+type,fn);
+                return this;
+            }
+        }
+        new Layer('icon')
+    </script>
+</body>
+
+</html>
