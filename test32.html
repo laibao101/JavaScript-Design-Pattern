@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="button">按钮</button>
+    <script type="text/javascript">
+    /**
+     * 惰性模式：减少每次代码执行时的重复性分支判断,通过对对象重定义来屏蔽原对象中的分支判断
+     */
+
+    //单体模式定义命名空间
+    var A = {};
+    //添加绑定事件方法
+    // A.on = function(dom, type, fn) {
+    //     if (dom.addEventListener) {
+    //         dom.addEventListener(type, fn, false);
+    //     } else if (dom.attachEvent) {
+    //         dom.attachEvent('on' + type, fn);
+    //     } else {
+    //         dom['on' + type] = fn;
+    //     }
+    // }
+
+
+
+    /**
+     * 加载立即执行
+     */
+    //添加事件绑定方法
+    // A.on = function(dom, type, fn) {
+    //     if (document.addEventListener) {
+    //         return function(dom, type, fn) {
+    //             dom.addEventListener(type, fn, false);
+    //         }
+    //     } else if (document.attachEvent) {
+    //         return function(dom, type, fn) {
+    //             dom.attachEvent('on' + type, fn);
+    //         }
+    //     } else {
+    //         return function(dom, type, fn) {
+    //             dom['on' + type] = fn;
+    //         }
+    //     }
+    // }();
+    // console.log(A.on)
+    // var button = document.getElementById('button');
+    // A.on(button,'click',function () {
+    //     alert(1)
+    // })
+    /**
+     * 惰性执行
+     */
+    //添加事件绑定方法
+    // A.on = function(dom, type, fn) {
+    //     if (dom.addEventListener) {
+    //         A.on = function(dom, type, fn) {
+    //             dom.addEventListener(type, fn, false);
+    //         }
+    //     } else if (dom.attachEvent) {
+    //         A.on = function(dom, type, fn) {
+    //             dom.attachEvent('on' + type, fn);
+    //         }
+    //     } else {
+    //         A.on = function(dom, type, fn) {
+    //             dom['on' + type] = fn;
+    //         }
+    //     }
+    //     //执行重定义方法
+    //     A.on(dom,type,fn);
+    // }
+    // console.log(A.on)
+
+
+
+
+    //创建XHR对象
+    function createXHR() {
+        //标准浏览器
+        if (typeof XMLHttpRequest != "undefined") {
+            return new XMLHttpRequest();
+        } else if (typeof ActiveXObject != "undefined") {
+            //IE
+            if (typeof arguments.callee.activeXString != 'string') {
+                var version = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'],
+                    i = 0,
+                    len = version.length;
+                //遍历并设置版本
+                for (; i < len; i++) {
+                    try {
+                        new ActiveXObject(version[i]);
+                        arguments.callee.activeXString = version[i];
+                        break;
+                    } catch (e) {}
+                }
+            }
+        } else {
+            //不支持的浏览器抛出错误
+            throw new Error('您的浏览器不支持ajax');
+        }
+    }
+
+
+
+
+    //第一种方案
+    var createXHR = (function() {
+        //标准浏览器
+        if (typeof XMLHttpRequest != "undefined") {
+            return function() {
+
+                return new XMLHttpRequest();
+            }
+        } else if (typeof ActiveXObject != "undefined") {
+            //IE
+            if (typeof arguments.callee.activeXString != 'string') {
+                return function() {
+                    var version = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'],
+                        i = 0,
+                        len = version.length;
+                    //遍历并设置版本
+                    for (; i < len; i++) {
+                        try {
+                            new ActiveXObject(version[i]);
+                            arguments.callee.activeXString = version[i];
+                            break;
+                        } catch (e) {}
+                    }
+                }
+            }
+        } else {
+            //不支持的浏览器抛出错误
+            return function() {
+                throw new Error('您的浏览器不支持ajax');
+            }
+        }
+    })()
+
+
+
+
+    //第二种方案
+    function createXHR() {
+        //标准浏览器
+        if (typeof XMLHttpRequest != "undefined") {
+            createXHR = function() {
+
+                return new XMLHttpRequest();
+            }
+        } else if (typeof ActiveXObject != "undefined") {
+            //IE
+            if (typeof arguments.callee.activeXString != 'string') {
+                createXHR = function() {
+                    var version = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'],
+                        i = 0,
+                        len = version.length;
+                    //遍历并设置版本
+                    for (; i < len; i++) {
+                        try {
+                            new ActiveXObject(version[i]);
+                            arguments.callee.activeXString = version[i];
+                            break;
+                        } catch (e) {}
+                    }
+                }
+            }
+        } else {
+            //不支持的浏览器抛出错误
+            createXHR = function() {
+                throw new Error('您的浏览器不支持ajax');
+            }
+        }
+    }
+
+    
+    </script>
+</body>
+
+</html>
