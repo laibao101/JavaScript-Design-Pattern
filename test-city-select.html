@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    省份
+    <select name="province" id="province"></select>
+    城市
+    <select name="cities" id="cities"></select>
+    <embed width="640" height="360" allownetworking="all" allowscriptaccess="always" src="https://staticlive.douyucdn.cn/common/share/play.swf?room_id=326183" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
+    <script type="text/javascript" src="jquery-amd.js"></script>
+    <script type="text/javascript" src="data.js"></script>
+    <!-- <script type="text/javascript" src="jquery-city-select.js"></script> -->
+    <script type="text/javascript" src="jquery-city-select/dist/jquery.city.select.js"></script>
+    <script type="text/javascript">
+    $('#province, #cities').citylist({
+        data: data,
+        id: 'id',
+        children: 'cities',
+        name: 'name',
+        metaTag: 'name'
+    });
+    </script>
+</body>
+
+</html>

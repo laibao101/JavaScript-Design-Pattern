@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    /**
+     * 参与者：在特定的作用域中执行给定的函数，并将参数原封不动地传递
+     * 
+     */
+
+
+    var A = {};
+
+    //事件绑定方法
+    // A.event.on = function(dom, type, fn) {
+    //     //w3c标准事件绑定
+    //     if (dom.addEveneListener) {
+    //         dom.addEveneListener(type, fn, false);
+    //     } else if (dom.attachEvent) {
+    //         dom.attachEvent('on' + type, fn);
+    //     } else {
+    //         dom['on' + type] = fn;
+    //     }
+    // }
+
+    // A.event.on = function(dom, type, fn, data) {
+    //     //w3c标准事件绑定
+    //     if (dom.addEveneListener) {
+    //         dom.addEveneListener(type, function(e) {
+    //             //在DOM环境中调用fn，并传入事件对象与data数据
+    //             fn.call(dom, e, data);
+    //         }, false);
+    //     } else if (dom.attachEvent) {
+    //         dom.attachEvent('on' + type, fn);
+    //     } else {
+    //         dom['on' + type] = fn;
+    //     }
+    // }
+
+    //函数绑定bind
+    function bind(fn, context) {
+        //闭包返回函数
+        return function() {
+            //对fn装饰并返回
+            return fn.apply(context, arguments);
+        }
+    }
+
+    //测试对象
+    var demoObj={
+        title:'这是一个例子'
+    }
+
+    //测试方法
+    function demoFn() {
+        console.log(this.title);
+    }
+
+    //让demoObj参与demoFn的执行
+    var bindFn=bind(demoFn,demoObj);
+    demoFn();
+    bindFn();
+    </script>
+</body>
+
+</html>
