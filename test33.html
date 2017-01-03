@@ -7,6 +7,8 @@
 </head>
 
 <body>
+    <button>按钮</button>
+    <p>ppppppp</p>
     <script type="text/javascript">
     /**
      * 参与者：在特定的作用域中执行给定的函数，并将参数原封不动地传递
@@ -52,19 +54,40 @@
     }
 
     //测试对象
-    var demoObj={
-        title:'这是一个例子'
-    }
+    // var demoObj={
+    //     title:'这是一个例子'
+    // }
 
-    //测试方法
+    // //测试方法
+    // function demoFn() {
+    //     console.log(this.title);
+    // }
+
+    // //让demoObj参与demoFn的执行
+    // var bindFn=bind(demoFn,demoObj);
+    // demoFn();
+    // bindFn();
+
+    /**
+     * 应用于事件
+     * 
+     */
+
+    var btn = document.getElementsByTagName('button')[0];
+    var p = document.getElementsByTagName('p')[0];
+    //对demoFn改进，在控制台输出参数与this对象
     function demoFn() {
-        console.log(this.title);
+        console.log(arguments, this);
     }
-
-    //让demoObj参与demoFn的执行
-    var bindFn=bind(demoFn,demoObj);
-    demoFn();
-    bindFn();
+    //未设置提供参与对象
+    // var bindFn = bind(demoFn);
+    // 
+    // 
+    // 
+    //提供btn元素参与对象h
+    var bindFn = bind(demoFn, btn);
+    //绑定事件
+    btn.addEventListener('click', bindFn);
     </script>
 </body>
 
