@@ -8,7 +8,7 @@
 
 <body>
     <button>按钮</button>
-    <p>ppppppp</p>
+    <p id="ppp">ppppppp</p>
     <script type="text/javascript">
     /**
      * 参与者：在特定的作用域中执行给定的函数，并将参数原封不动地传递
@@ -45,13 +45,13 @@
     // }
 
     //函数绑定bind
-    function bind(fn, context) {
-        //闭包返回函数
-        return function() {
-            //对fn装饰并返回
-            return fn.apply(context, arguments);
-        }
-    }
+    // function bind(fn, context) {
+    //     //闭包返回函数
+    //     return function() {
+    //         //对fn装饰并返回
+    //         return fn.apply(context, arguments);
+    //     }
+    // }
 
     //测试对象
     // var demoObj={
@@ -78,6 +78,7 @@
     //对demoFn改进，在控制台输出参数与this对象
     function demoFn() {
         console.log(arguments, this);
+        console.log(this.id)
     }
     //未设置提供参与对象
     // var bindFn = bind(demoFn);
@@ -85,9 +86,127 @@
     // 
     // 
     //提供btn元素参与对象h
-    var bindFn = bind(demoFn, btn);
+    // var bindFn = bind(demoFn, btn);
+    // 
+    // 
+    //提供p元素参与对象
+    // var bindFn = bind(demoFn,p);
+    //绑定事件
+    // btn.addEventListener('click', bindFn);
+
+    // btn.removeEventListener('click',bindFn);
+    // 
+    // 
+    // 
+    // 
+    /**
+     * 原生bind方法
+     */
+
+    //提供p元素参与对象
+    var bindFn = demoFn.bind(p);
+    //绑定事件
+    // btn.addEventListener('click', bindFn);
+    //函数柯里化
+    function curry(fn) {
+        //缓存数组slice方法Array.prototype.slice
+        var Slice = [].slice;
+        //从第二个参数开始截取参数
+        var args = Slice.call(arguments, 1);
+        //闭包返回新函数
+        return function() {
+            //将参数（类数组）转化为数组
+            var addArgs = Slice.call(arguments),
+                //拼接参数
+                allArgs = args.concat(addArgs);
+            //返回新函数
+            return fn.apply(null, allArgs);
+        }
+    }
+
+
+    //加法器
+    function add(num1, num2) {
+        return num1 + num2;
+    }
+    // //加5加法器
+    // function add5(num) {
+    //     return add(5,num);
+    // }
+    //测试add加法器
+    // console.log(add(1,2));
+
+
+    //函数柯里化创建加4加法器
+    // var add5 = curry(add,5);
+    // console.log(add5(7));
+
+    // var add78 = curry(add,7,8);
+
+    // console.log(add78());
+
+    // var add789 = curry(add,7,8,9);
+    // console.log(add789())
+    // 
+    // 
+    // 
+
+    //重写bind
+    function bind(fn, context) {
+        //缓存数组slice方法
+        var Slice = Array.prototype.slice,
+            //从第三个参数开始截取参数
+            args = Slice.call(arguments, 2);
+        //返回新方法
+        return function() {
+            //将参数转化为数组
+            var addArgs = Slice.call(arguments),
+                //拼接参数
+                allArgs = addArgs.concat(args);
+            //对fn装饰并返回
+            console.log(allArgs)
+            return fn.apply(context, allArgs);
+        }
+    }
+
+
+    var demoData1 = {
+            text: '这是第一组数据'
+        },
+        demoData2 = {
+            text: '这是第二组数据'
+        };
+
+    //提供btn元素、demoData1参与对象
+    // var bindFn = bind(demoFn,btn,demoData1);
+
+    //提供btn元素、demoData1、demoData2参与对象
+    // var bindFn = bind(demoFn,btn,demoData1,demoData2);
+
     //绑定事件
     btn.addEventListener('click', bindFn);
+
+
+    //兼容版本
+    if (Function.prototype.bind === undefined) {
+        Function.prototype.bind = function(context) {
+            //缓存数组slice方法
+            var Slice = Array.prototype.slice,
+                //从第二个参数开始截取参数
+                args = Slice.call(arguments, 1),
+                //保存当前函数引用
+                that = this;
+            //返回新方法
+            return function() {
+                //将参数转化为数组
+                var addArgs = Slice.call(arguments),
+                    //拼接参数
+                    allArgs = addArgs.concat(args);
+                //对fn装饰并返回
+                return that.apply(context, allArgs);
+            }
+        }
+    }
     </script>
 </body>
 
