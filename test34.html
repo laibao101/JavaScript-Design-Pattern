@@ -7,6 +7,14 @@
 </head>
 
 <body>
+    <script src="notification-logger.js"></script>
+    <script>
+    // logger.init();
+    var a = 2;
+    // var b = "I would like to alert this";
+    // logger.log(b);
+    // console.log(a, "title");
+    </script>
     <script type="text/javascript">
     /**
      * 等待者模式：通过对多个异步进程监听，来触发未来发生的动作
@@ -46,7 +54,7 @@
                 //遍历所有注册了的监控对象
                 for (var i = dfd.length - 1; i >= 0; i--) {
                     //如果有任意一个监控对象没有被解决或者解决失败则返回
-                    if (dfd[i] && dfd[i].resolved || dfd[i].rejected) {
+                    if (dfd[i] && !dfd[i].resolved || dfd[i].rejected) {
                         return;
                     }
                     //清除监控对象
@@ -79,7 +87,7 @@
         function _exec(arr) {
             var i = 0,
                 len = arr.length;
-            //遍历回调函数租执行回调
+            //遍历回调函数组执行回调
             for (; i < len; i++) {
                 try {
                     //执行回调函数
@@ -98,7 +106,6 @@
             for (--i; i >= 0; i--) {
                 //如果不存在监控对象，或者监控对象已经解决，或者不是监控对象
                 if (!dfd[i] || dfd[i].resolved || dfd.rejected || !dfd[i] instanceof Primise) {
-                    //清理内存 清除当前监控对象
                     dfd.splice(i, 1);
                 }
             }
@@ -118,14 +125,14 @@
         that.fail = function() {
             //向失败回调函数容器中添加回调方法
             failArr = failArr.concat(slice.call(arguments));
-            //反对等待者对象
+            //返回等待者对象
             return that;
         }
     }
 
 
     // setTimeout(function () {
-    // 	console.log('first');
+    //  console.log('first');
 
     // },30)
     // console.log('second')
@@ -139,8 +146,10 @@
         setTimeout(function() {
             console.log('first finish');
             //发布解决成功消息
-            dtd.resolve();
-        }, 5000);
+            // dtd.resolve();
+            //发布解决失败消息
+            dtd.reject();
+        }, 1000);
 
 
         return dtd;
@@ -154,12 +163,27 @@
                 console.log('second finish');
                 //发布解决成功消息
                 dtd.resolve()
-            })
+                //发布解决失败消息
+                // dtd.reject();
+            }, 2000)
             //返回监听对象
         return dtd
     }();
 
 
+    // waiter
+    // .when(first)
+    // .done(function () {
+    //     console.log("done")
+    // },function () {
+    //     console.log('done two')
+    // })
+    // .fail(function () {
+    //     console.log('fail')
+    // })
+    // .done(function () {
+    //     console.log("done three")
+    // })
 
     waiter
     //监听两个彩蛋
@@ -175,7 +199,7 @@
             console.log('fail');
         });
 
-
+        
     </script>
 </body>
 
