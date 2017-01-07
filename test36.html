@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    /**
+     * 模块化：将复杂的系统分解成高内聚，低耦合的模块，使系统开发变得可控、可维护、可拓展，提高模块的复用率
+     * 异步模块模式-AMD：请求发出后，继续其他业务逻辑，知道模块加载完成执行后续的逻辑，实现模块开发中对模块加载完成后的引用
+     */
+
+
+    //浏览器环境不同于服务器环境，在浏览器中对文件的加载是异步的，因此要使用未加载文件中的某些模块方法时必然经历文件加载过程。因此对未加载文件中的模块引用，同步模块模式是无能为力的。
+
+
+    //加载脚本文件
+    var loadScript = function(src) {
+            var _script = document.createElement('script');
+            _script.type = 'text/javascript';
+            _script.src = src;
+            document.getElementsByTagName('head')[0].appendChild(_script);
+            //将元素插入到页面中
+        }
+        //加载localstorage文件
+    loadScript('localstorage.js');
+    //使用localstorage模块
+    F.module('localstorage', function(ls) {
+
+    });
+
+
+    //创建闭包，目的是封闭已创建的模块,防止外界对其直接访问，并在闭包中创建模块管理器F，并作为借口保存在全局作用域中
+
+    //向闭包中传入模块管理器对象F（~屏蔽压缩文件时）
+    ~(function(F) {
+        //模块缓存器，存储已创建模块
+        var moduleCache = {}
+    })((function() {
+        //创建模块管理器对象F，并保存在全局作用域中
+        return window.F = {};
+    })());
+    </script>
+    <script type="text/javascript">
+    /**
+     * 创建或调用模块方法
+     * @param url 参数为模块url
+     * @param deps 参数为依赖模块
+     * @param callback 参数为模块主函数
+     */
+    F.module = function(url, modDeps, modCallback) {
+        //将参数转化为数组
+        var args = [].slice.call(arguments),
+            //获取模块构造函数（参数数组中最后一个参数成员)
+            callback = args.pop(),
+            //获取依赖模块（紧邻回调函数参数，且数据类型为数组）
+            deps = (args.length && args[args.length - 1] instanceof Array ? args.pop() : []),
+            //该模块url（模块id）
+            url = args.length ? args.pop() : null,
+            //依赖模块序列
+            params = [],
+            //未加载的依赖模块数量统计
+            depsCount = 0,
+            //依赖模块序列中索引值
+            i = 0,
+            //依赖模块序列长度
+            len;
+        //获取依赖模块长度
+        if
+    }
+    </script>
+</body>
+
+</html>
