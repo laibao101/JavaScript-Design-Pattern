@@ -14,8 +14,8 @@
     <script type="text/template" id="demo_script">
         <div id="tag_cloud">
             {% for (var i = 0,len=tagCloud,length; i
-            < len; i++) { var ctx=tagCloud[i]; %} <a href="#" class="tag_item
-			{% if (ctx['is_selected']) {%}
+            < len; i++) { var ctx=tagCloud[i]; %} 
+            <a href="#" class="tag_item {% if (ctx['is_selected']) {%}
 			selected
 			{%}%}" title="{%=ctx['title']%}">{%=ctx["text"]%}</a>
         </div>
