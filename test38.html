@@ -22,9 +22,30 @@
             //内部数据对象
             var M = {};
             //服务端获取的数据,通常通过ajax获取并存储，后面的案例为简化实现，直接作为同步数据写在页面中，减少服务器端异步请求操作
-            M.data = {};
+            M.data = {
+                //左侧侧边栏导航服务器端请求得到的响应数据
+                sideBar:[
+                    {
+                        text:'萌妹子',
+                        icon:'img/1.png',
+                        content:'萝莉千本樱',
+                        img:'img/1.jpg',
+                        href:'https://www.baidu.com/'
+                    },
+                    {
+                        text:'动漫',
+                        icon:'img/1.png',
+                        content:'萝莉千本樱',
+                        img:'img/1.jpg',
+                        href:'https://www.hao123.com/'
+                    }
+                ]
+            };
             //配置数据,页面加载时提供
-            M.conf = {};
+            M.conf = {
+                //侧边导航动画配置数据
+                sideBarCloseAnimate:false
+            };
             //返回数据模型对象操作方法
             return {
                 //获取服务器端数据
