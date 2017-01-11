@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body>
+    <table class="table table-bordered">
+        <caption>Optional table caption.</caption>
+        <thead>
+            <tr>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+    <script type="text/javascript">
+        var oTable = $('.table tbody');
+
+
+        var A = function (data,context) {
+            return new A.fn.init(data,context);
+        }
+
+        A.fn=A.prototype = {
+            constructor: A,
+            init:function (data,context) {
+                this.data = data;
+                this.context = context;
+                this.length++;
+                this.render();
+                return this;
+            },
+            //元素长度
+            length: 0,
+            //增强数组
+            push: [].push,
+            splice: [].splice,
+            render:function (data) {
+                var html = '',
+                data = data || this.data;
+                this.length = this.data.length;
+                for (var i = 0,len=data.length; i < len; i++) {
+                    html += '<tr>\
+                                <td class="text-center">'+data[i].firstName+'</td>\
+                                <td class="text-center">'+data[i].lastName+'</td>\
+                                <td class="text-center">'+data[i].userName+'</td>\
+                            </tr>';
+                };
+                this.context.html(html);
+                return this;   
+            },
+            pushData:function (data) {
+                this.data = this.data.concat(data);
+                this.render()
+                return this;
+            },
+            delData:function (str) {
+                for (var i = 0,len=this.data.length; i < len; i++) {
+                    for (j in this.data[i]) {
+                        
+                        if (this.data[i][j] == str) {
+                            this.data.splice(i,1);
+                            i--;
+                            len--;
+                            break;
+                        }
+                        
+                    }
+                }
+                return this;
+            },
+            changeData:function (data) {
+                // if (this.compareData(data)) {
+                //     return this;
+                // }
+                this.data = data;
+                this.render();
+                return this;
+            },
+            searchData:function (str) {
+                var searched = [];
+                for (var i = 0,len=this.data.length; i < len; i++) {
+                    for (j in this.data[i]) {
+                        
+                        if (this.data[i][j] == str) {
+                            searched.push(this.data[i]);
+                            break;
+                        }
+                        
+                    }
+                }
+
+                // if (this.compareData(searched)) {
+                //     return this;
+                // }
+
+                this.render(searched);
+                return this;
+            },
+            compareData:function (data) {
+                var source = this.data;
+
+                if (source.length != data.length) {
+                    return false;
+                }
+                var sourceStr = JSON.stringify(source);
+                var dataStr = JSON.stringify(data);
+                console.log(sourceStr);
+                console.log(dataStr);
+                return sourceStr === dataStr;
+
+            }
+        }
+        A.fn.init.prototype = A.fn;
+
+        var data = [
+            {firstName:'Larry',lastName:'the Bird',userName:'@twitter'},
+        ];
+
+        var data1 = [
+            {firstName:'Larry',lastName:'the Bird',userName:'@twitter'},
+            {firstName:'Mark',lastName:'Otto',userName:'@mdo'},
+        ];
+
+        var data2 = [
+            {firstName:'Mark',lastName:'Otto',userName:'@mdo'},
+            {firstName:'Larry',lastName:'the Bird',userName:'@twitter'},
+        ];
+
+
+
+        var array1 = [
+            {firstName:'Larry',lastName:'the Bird',userName:'@twitter'},
+            {firstName:'Mark',lastName:'Otto',userName:'@mdo'},
+        ];
+        var array2 =  [
+            {firstName:'Mark',lastName:'Otto',userName:'@mdo'},
+            {firstName:'Larry',lastName:'the Bird',userName:'@twitter'},
+        ];
+        
+        // var isSame = (array1.length == array2.length) && array1.every(function (ele,index) {
+        //     console.log(ele);
+        //     console.log(Object.keys(ele))
+        // })
+        
+        
+
+
+
+        var a = A(data1,oTable);
+
+
+
+        // var b = A(data1,oTable);
+
+
+        // console.log(a)
+
+        // a.render()
+
+        // a.pushData(data1)
+
+
+        // a.delData('Larry');
+
+        // a.changeData(data1);
+        
+        // a.changeData(data2)
+        // 
+        // a.searchData('@twitter')
+
+
+
+
+
+    </script>
+   
+</body>
+
+</html>
