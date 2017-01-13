@@ -29,6 +29,12 @@
     li:hover {
         background: #666;
     }
+    .nav-icon-news:after{
+        content: "\2b";
+    }
+    .nav-icon-movie:before{
+        content: "\e059";
+    }
     </style>
 </head>
 
@@ -86,6 +92,7 @@
                  */
                 setData: function(m, v) {
                     M.data[m] = v;
+                    MVP.init();
                     return v;
                 },
                 getConf: function(c) {
@@ -113,7 +120,7 @@
              * @param  {[type]} replacePos 元素类型
              * @return {[type]}            [description]
              */
-            function getHTML(str, replacePos) {
+            function getHTML(str, type) {
                 //简化实现，只处理字符串中第一个{}里面的内容
                 return str
                     .replace(/^(\w+)([^\{\}]*)?(\{([@\w]+)\})?(.*?)$/, function(match, $1, $2, $3, $4, $5) {
@@ -125,15 +132,15 @@
                         return type === 'in' ? '<' + $1 + $2 + $5 + '>' + $4 + REPLACEKEY + '</' + $1 + '>' : type === 'add' ? '<' + $1 + $2 + $5 + '>' + $4 + '</' + $1 + '>' + REPLACEKEY : '<' + $1 + $2 + $5 + '>' + $4 + '</' + $1 + '>';
                     })
                     //处理特殊标识#--id属性
-                    .replace(/#([@\-\w]+)/g, 'id="$1"')
+                    .replace(/#([@\-\w]+)/g, ' id="$1"')
                     //处理特殊标识.--class属性
-                    .replace(/\.([@\-\w]+)/g, 'class="$1"')
+                    .replace(/\.([@\-\w]+)/g, ' class="$1"')
                     //处理其他属性组
                     .replace(/\[(.+)\]/g, function(match, key) {
                         //元素属性组
                         var a = key
                             //过滤其中引号
-                            .replace(/'|'/g, '')
+                            .replace(/'|"/g, '')
                             //以空格分组
                             .split(' '),
                             //属性模板字符串
@@ -201,7 +208,7 @@
                         //否则，如果partInex（层级索引）对应的层级不是最后一层 则作为父层级元素处理
                         //（该层级有子层级，即该元素是父元素）
                         //否则，该元素无兄弟元素，无子元素
-                        nodeTpl = formateItem(html, nodeTpl);
+                        nodeTpl = formateItem(nodeTpl, getHTML(itemValue, itemIndex === itemLen - 1 ? (partIndex === partLen - 1 ? '' : 'in') : 'add'));
                     });
                     //用渲染子层级得到的模板去渲染父层级模板
                     html = formateItem(html, nodeTpl);
@@ -268,11 +275,25 @@
     })(window);
     </script>
     <script type="text/javascript">
-        window.onload=function () {
-            //执行管理器
-            MVP.init();
-        }
+    window.onload = function() {
+        //执行管理器
+        MVP.init();
+        MVP.model.setData('nav',[{
+                    text: '新闻',
+                    mode: 'news',
+                    url: 'http://www.baidu.com'
+                }]);
+        // console.log(MVP.model.getData('nav'));
+        // MVP.init()
+        // 
+        MVP.model.setData('nav',[{
+                    text: '新闻354343',
+                    mode: 'news',
+                    url: 'http://www.baidu.com'
+                }]);
+    };
     </script>
+    
 </body>
 
 </html>
