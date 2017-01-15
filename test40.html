@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <embed width="540" height="260" allownetworking="all" allowscriptaccess="always" src="https://staticlive.douyucdn.cn/common/share/play.swf?room_id=252802" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
+    <script type="text/javascript">
+    //~屏蔽压缩层
+    ~(function() {
+        //在闭包中获取全局变量
+        var window = this || (0, eval)('this');
+        //获取页面字体大小,作为创建页面UI尺寸参照物
+        var FONTSIZE = function() {
+            //获取页面body元素字体大小并转化为整数
+            return parseInt(document.body.currentStyle ? document.body.currentStyle.fontSize : getComputedStyle(document.body, false)['fontSize']);
+        }();
+        //视图模型对象
+        var VM = function() {
+            //组件创建策略对象
+            var Method = {
+                //进度条组件创建方法
+                /**
+                 * 进度条组件创建方法
+                 * @param  {[type]} dom  进度条容器
+                 * @param  {[type]} data 进度条数据模型
+                 * @return {[type]}      [description]
+                 */
+                progressbar: function(dom, data) {
+                    //进度条进度完成容器
+                    var progress = document.createElment('div'),
+                        //数据模型数据,结构{position:50}
+                        param = data.data;
+                    //设置进度完成容器尺寸
+                    progress.style.width = (param.position || 100) + '%';
+                    //为进度条组件添加UI样式
+                    dom.className += 'ui-progressbar';
+                    //进度完成容器元素插入进度条容器中
+                    dom.appendChild(progress);
+
+                },
+                //滑动组件创建方法
+                /**
+                 * 滑动组件创建方法
+                 * @param  {[type]} dom  滑动条容器
+                 * @param  {[type]} data 滑动条数据模型
+                 * @return {[type]}      [description]
+                 */
+                slider: function(dom, data) {
+                    //滑动条拨片
+                    var bar = document.createElement('span'),
+                        //滑动条进度容器
+                        progress = document.createElement('div'),
+                        //滑动条容量提示信息
+                        totleText = null,
+                        //滑动条拨片提示信息
+                        progressText = null,
+                        //数据模型结构,结构{position:60,totle:200}
+                        param = data.data,
+                        //容器元素宽度
+                        width = dom.clientWidth,
+                        //容器元素横坐标值
+                        left = dom.offsetLeft,
+                        //拨片位置(以模型数据中position数据计算)
+                        realWidth = (param.position || 100) * width / 100;
+                    //清空滑动条容器
+                }
+            };
+        };
+        //将视图模型对象绑定在window上面，供外部获取
+        window.VM = VM;
+    })();
+    </script>
+    
+    
+</body>
+
+</html>
