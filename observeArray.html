@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    if (!Object.prototype.watch) {
+        Object.prototype.watch = function(prop, handler) {
+            var oldVal = this[prop]; //旧值
+            var nowVal = oldVal; //现值
+            
+            if ( this[prop]) {
+                this.__defineSetter__(prop, function(val) {
+                    oldVal = nowVal;
+                    nowVal = handler(oldVal, val);
+                });
+                this.__defineGetter__(prop, function() {
+                    return nowVal;
+                });
+            }
+        }
+    }
+
+    var my={name:'laowang'};
+    my.watch('name',function (oldVal,newVal) {
+        console.log(oldVal,newVal);
+    });
+
+    </script>
+</body>
+
+</html>
