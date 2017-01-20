@@ -5,35 +5,38 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <style type="text/css">
-        .demo{
-            width: 600px;
-            background: pink;
-            text-align: center;
-            position: relative;
-            height: 18px;
-            margin-bottom: 10px;
-        }
-        .first b{
-            position: absolute;
-            right: -30px;
-        }
-        .demo span{
-            width: 10px;
-            height: 18px;
-            background: blue;
-            display: inline-block;
-            position: absolute;
-            cursor: pointer;
-        }
-        .third div{
-            height: 100%;
-            background: red;
-        }
+    .demo {
+        width: 600px;
+        background: pink;
+        text-align: center;
+        position: relative;
+        height: 18px;
+        margin-bottom: 10px;
+    }
+    
+    .first b {
+        position: absolute;
+        right: -30px;
+    }
+    
+    .demo span {
+        width: 10px;
+        height: 18px;
+        background: blue;
+        display: inline-block;
+        position: absolute;
+        cursor: pointer;
+    }
+    
+    .third div {
+        height: 100%;
+        background: red;
+    }
     </style>
 </head>
 
 <body>
-    <embed width="540" height="260" allownetworking="all" allowscriptaccess="always" src="https://staticlive.douyucdn.cn/common/share/play.swf?room_id=206858" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
+    <embed width="640" height="360" allownetworking="all" allowscriptaccess="always" src="https://staticlive.douyucdn.cn/common/share/play.swf?room_id=460066" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
     <div class="first demo" data-bind="type:'slider',data:demo1"></div>
     <div class="second demo" data-bind="type:'slider',data:demo2">test</div>
     <div class="third demo" data-bind="type:'progressbar',data:demo3"></div>
@@ -112,7 +115,7 @@
                     dom.appendChild(progressText);
                     //设置滑动条
                     setStyle(realWidth);
-                    
+
                     //为滑动条组件添加ui样式
                     dom.className += ' ui-slider';
                     //将进度容器添加到滑动条组件中
@@ -206,6 +209,26 @@
     window.onload = function() {
         VM();
     }
+
+
+    var TemplateEngine = function(html, options) {
+        var re = /<%([^%>]+)?%>/g,
+            reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
+            code = 'var r=[];\n',
+            cursor = 0;
+        var add = function(line, js) {
+            js ? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
+                (code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
+            return add;
+        };
+        while (match = re.exec(html)) {
+            add(html.slice(cursor, match.index))(match[1], true);
+            cursor = match.index + match[0].length;
+        }
+        add(html.substr(cursor, html.length - cursor));
+        code += 'return r.join("");';
+        return new Function(code.replace(/[\r\t\n]/g, '')).apply(options);
+    };
     </script>
 </body>
 
