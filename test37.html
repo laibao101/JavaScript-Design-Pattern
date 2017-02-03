@@ -26,18 +26,25 @@
      */
     //模块化开发是页面的功能细化，逐一实现每个微功能，完成系统需求，这是一种很好的编程实践
 
-    F.module(['lib/template','lib/dom'],function (template,dom) {
-    	//服务端获取数据
-    	console.log(template)
-    	var data = {
-    		tag_cloud:[
-    			{is_selected:true,title:'这是一本设计模式的书',text:'设计模式'}
-    		]
-    	}
-    	//创建组件视图逻辑
-    	var str = template('demo_script',data);
-    	dom.html('test',str);
-    })
+    // F.module(['lib/template','lib/dom'],function (template,dom) {
+    // 	//服务端获取数据
+    // 	console.log(template)
+    // 	var data = {
+    // 		tag_cloud:[
+    // 			{is_selected:true,title:'这是一本设计模式的书',text:'设计模式'}
+    // 		]
+    // 	}
+    // 	//创建组件视图逻辑
+    // 	var str = template('demo_script',data);
+    // 	dom.html('test',str);
+    // })
+    </script>
+    <div class="ty ttt" id="ty">111</div>
+    <script type="text/javascript">
+    	var a = document.getElementById('ty');
+    	var remove = 'ty';
+    	var b = a.className.replace(new RegExp(remove,'g'),'');
+    	console.log(b)
     </script>
 </body>
 
